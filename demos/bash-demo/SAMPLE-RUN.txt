@@ -1,0 +1,53 @@
+rm -rf po/ locale/
+Finished cleaning .pot file.
+
+Creating po/demo.pot from demo.sh ...
+mkdir -p po/
+xgettext --keyword=i18n_msgid -k --language=Shell --add-comments --sort-output -o po/demo.pot demo.sh
+sed -i 's/=CHARSET/=UTF-8/' po/demo.pot
+IMPORTANT: po/demo.pot needs to be edited before making other .po files!
+Creating po/en/demo.po from po/demo.pot ...
+VAR=$(basename $(dirname "po/en/demo.po")) && \
+	mkdir -p po/"$VAR"/ && \
+	msginit --input=po/demo.pot --locale="$VAR" --output=po/"$VAR"/demo.po \
+		--no-translator
+Created po/en/demo.po.
+IMPORTANT: Add translations to po/en/demo.po !
+Finished creating .pot file.
+
+sed -i '/msgid "hello"/!b;n;cmsgstr "Hello World!"' po/en/demo.po
+Building locale/en/LC_MESSAGES/demo.mo from po/en/demo.po ...
+mkdir -p $(dirname "locale/en/LC_MESSAGES/demo.mo")
+msgfmt -c --output-file="locale/en/LC_MESSAGES/demo.mo" po/en/demo.po
+po/en/demo.po:7: warning: header field 'Project-Id-Version' still has the initial default value
+Creating po/fr/demo.po from po/demo.pot ...
+VAR=$(basename $(dirname "po/fr/demo.po")) && \
+	mkdir -p po/"$VAR"/ && \
+	msginit --input=po/demo.pot --locale="$VAR" --output=po/"$VAR"/demo.po \
+		--no-translator
+Created po/fr/demo.po.
+IMPORTANT: Add translations to po/fr/demo.po !
+sed -i '/msgid "hello"/!b;n;cmsgstr "Bonjour le monde!"' po/fr/demo.po
+Building locale/fr/LC_MESSAGES/demo.mo from po/fr/demo.po ...
+mkdir -p $(dirname "locale/fr/LC_MESSAGES/demo.mo")
+msgfmt -c --output-file="locale/fr/LC_MESSAGES/demo.mo" po/fr/demo.po
+po/fr/demo.po:7: warning: header field 'Project-Id-Version' still has the initial default value
+Finished compiling .mo files.
+
+
+Using LANGUAGE settings from environment...
+./demo.sh
+Hello World!
+Using explicitly set LANGUAGE settings...
+LANGUAGE=C ./demo.sh
+hello
+LANGUAGE=en ./demo.sh
+Hello World!
+LANGUAGE=en_CA ./demo.sh
+Hello World!
+LANGUAGE=fr ./demo.sh
+Bonjour le monde!
+LANGUAGE=fr_CA ./demo.sh
+Bonjour le monde!
+LANGUAGE=es ./demo.sh
+hello
